@@ -1,18 +1,18 @@
 import streamlit as st
 import pandas as pd
-import pickle 
+import pickle
 import numpy as np
 
 def predictor(feat1, feat2, feat3, feat4, feat5, feat6):
-    with open('C:/Users/10273310/Desktop/iCode/Sirigen/BV510-Activation/Final/m3.sav', 'rb') as f:
+    with open('m3.sav', 'rb') as f:
                 svm_model = pickle.load(f)
 
-    with open('C:/Users/10273310/Desktop/iCode/Sirigen/BV510-Activation/Final/m1.sav', 'rb') as f:
+    with open('m1.sav', 'rb') as f:
                 linear_regressor = pickle.load(f)
 
-    with open('C:/Users/10273310/Desktop/iCode/Sirigen/BV510-Activation/Final/m2.sav', 'rb') as f:
+    with open('m2.sav', 'rb') as f:
                 xgb1 = pickle.load(f)
-    
+
     X = np.array([feat1, feat2, feat3, feat4, feat5, feat6]).reshape(1,-1)
     X2 = np.array([feat1, feat2-7.33, feat3, feat4, feat5, feat6]).reshape(1,-1)
     X3 = np.array([feat1, feat2+7.33, feat3, feat4, feat5, feat6]).reshape(1,-1)
@@ -28,7 +28,7 @@ def predictor(feat1, feat2, feat3, feat4, feat5, feat6):
     linear_regressor_pred3 = linear_regressor.predict(X3)[0]
     print("Run successful with input:", X,X2,X3)
     p = float(np.mean([svm_pred,svm_pred2,svm_pred3, xgb1_pred,xgb1_pred2,xgb1_pred3, linear_regressor_pred,linear_regressor_pred2,linear_regressor_pred3]))
-    
+
     return "{:.2f}".format(p)
 
 st.title('BV510 Linker Predictor')
